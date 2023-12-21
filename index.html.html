@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주기적인 처리 / window 시간차마다 실행하기</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <section class="banner">
+        <div id="banner" class="banner" style="background-image: url(img/banner_0.jpg);">
+            <div class="btns"></div>
+        </div>
+
+    </section>
+    <script>
+
+        let count = 0; //타겟번호
+        const contentNum = 6;
+        //프로그래밍(사칙연산이 가능한)위해 모든것을 숫자화해두어야 한다.
+        //변수화된 숫자란 바로 정렬을 의미함
+        //문자정보를 사라지게 해라.
+        // document.querySelector("#banner").classList.add('red')
+
+        let btntag = "";
+        for (i = 0; i < contentNum; i++) {
+            btntag += `<span>${i}</span>`
+        }
+
+
+        document.querySelector(".banner .btns").innerHTML = btntag;
+        document.querySelectorAll(".banner .btns span")[count].classList.add = 'act';
+        //setinterval이 돌기 전 첫 화면
+
+        // setInterval(function () { autocolor() }, 3000) //1초 뒤부터 주기적으로 실행함.
+
+        function autocolor() {
+            count++;
+            count %= contentNum;
+            document.querySelector("#banner").style.backgroundImage = `url(img/banner_${count}.jpg)`
+            //banner_${count}로 변수화시킬 수 있다.
+            //이름이 통일되어있기 때문에 array로 만들 필요없다. 
+
+            document.querySelectorAll(".banner .btns span").forEach((el, idx) => {
+                //원시데이터를 주로하는 map, forEach는 html태그 Array를 주어로 함
+                console.log(el, idx)
+                if (count === idx) {
+                    el.classList = "act"
+                } else {
+                    el.classList = ""
+                }
+            })
+        }
+
+        let autobackgroud = setInterval(function () { autocolor(); }, 3000);
+        document.querySelectorAll('.banner .btns span').forEach((el, idx) => {
+            el.addEventListener('click', function () {
+                clearInterval(autobackgroud); //클릭하면 자동롤링 멈춰
+                // alert(idx)
+                count = idx; //타겟번호에 클릭된 버튼 번호 넣어줌
+                btnact(count);
+            })
+        })
+
+        function btnact(c) {
+            document.querySelector('#banner').style.backgroundImage = `url(img/banner_${c}.jpg)`;
+            document.querySelectorAll(".banner .btns span").forEach(function (el, idx) {
+                if (c === idx) {
+                    el.classList = 'act'
+                } else {
+                    el.classList = ''
+                }
+            })
+        }
+
+    </script>
+</body>
+
+</html>
